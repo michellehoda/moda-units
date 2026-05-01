@@ -133,9 +133,6 @@ const elkEnergy = 10;
 const elkReproduceChance = 0.001;
 const elkEnergyLoss = 0.02;
 
-const maxGrassLevel = 10;
-const grassGrowthRate = 0.01;
-
 const maxHydration = 10; // Maximum water a grid square can hold
 const minHydration = 0;   // Minimum water
 
@@ -188,13 +185,13 @@ for (let x = 0; x < sim.width / sim.gridStep; x++) {
     square.zIndex = -Infinity;
 
     // Set initial grass level
-    const grassLevel = Math.random() > .5 ? maxGrassLevel : Math.random() * maxGrassLevel;
+    const grassLevel = Math.random() > .75 ? 1 : 0;
     const hydration = Math.random() * maxHydration; // Random starting water level
     
     square.state = { grassLevel, hydration };
 
     // Color squares based on grass level
-    square.vis({ tint: s => s.state.grassLevel === maxGrassLevel ? "0x00cc00" : "0x996600" });
+    square.vis({ tint: s => s.state.grassLevel === 1 ? "0x00cc00" : "0x996600" });
   }
 }
 

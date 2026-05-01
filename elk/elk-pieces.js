@@ -3,23 +3,14 @@
 
 /*** Grow grass */
 sim.squares.forEach(square => {
-  if (square.state.grassLevel < maxGrassLevel && square.state.hydration > 0) {
-    square.state.grassLevel = Math.min(maxGrassLevel, square.state.grassLevel + grassGrowthRate);
+  if (square.state.grassLevel == 0 && square.state.hydration > 0) {
+    square.state.grassLevel = 1;
+  }
+    if (square.state.grassLevel == 1 && square.state.hydration == 0) {
+    square.state.grassLevel = 0;
   }
 });
 /*** End grow grass */
-
-/*** Hydrate grass */
-sim.squares.forEach(square => {
-  square.state.hydration = Math.min(maxHydration, square.state.hydration + amount);
-});
-/*** End hydrate grass */
-
-/*** Dry out grass */
-sim.squares.forEach(square => {
-  square.state.hydration = Math.max(minHydration, square.state.hydration - amount);
-});
-/*** End dry out grass */
 
 /*** Reduce energy */
 const energyLoss = agent.label("sheep") ? sheepEnergyLoss : wolfEnergyLoss;
@@ -52,20 +43,20 @@ if (Math.random() < reproduceChance) {
 
 /*** Eat grass */
 const sq = agent.squareOfCentroid();
-if (sq.state.grassLevel >= maxGrassLevel) {
-  agent.state.energy = agent.state.energy + globals.get("sheepEnergyFromGrass");
+if (sq.state.grassLevel == 1) {
+  agent.state.energy = agent.state.energy + globals.get("elkEnergyFromGrass");
   sq.state.grassLevel = 0;
 }
 /*** End eat grass */
 
-/*** Rain */
+/*** Hydrate grass */
 sim.squares.forEach(square => {
-  hydrate(square, intensity);
+  square.state.hydration = Math.min(maxHydration, square.state.hydration + amount);
 });
-/*** End rain */
+/*** End hydrate grass */
 
-/*** Drought */
+/*** Dry out grass */
 sim.squares.forEach(square => {
-  dryOut(square, intensity);
+  square.state.hydration = Math.max(minHydration, square.state.hydration - amount);
 });
-/*** End drought */
+/*** End dry out grass */
