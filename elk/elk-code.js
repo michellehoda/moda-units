@@ -127,17 +127,7 @@ const wolfSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 300">
 `;
 
 const encodeSvg = (svg) => `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`;
-//const wolfImage = encodeSvg(wolfSvg);
-//const sheepImage = encodeSvg(sheepSvg);
 const elkImage = encodeSvg(elkSvg);
-
-//const sheepEnergy = 6;
-//const sheepReproduceChance = 0.002;
-//const sheepEnergyLoss = 0.01;
-
-//const wolfEnergy = 20;
-//const wolfReproduceChance = 0.0005;
-//const wolfEnergyLoss = 0.1;
 
 const elkEnergy = 10;
 const elkReproduceChance = 0.001;
@@ -145,7 +135,8 @@ const elkEnergyLoss = 0.02;
 
 const maxGrassLevel = 10;
 const grassGrowthRate = 0.01;
-const maxHydration = 100; // Maximum water a grid square can hold
+
+const maxHydration = 10; // Maximum water a grid square can hold
 const minHydration = 0;   // Minimum water
 
 // Create widgets
@@ -153,7 +144,7 @@ addWidget({
   data: {
     label: "Elk Energy from Grass",
     min: 1,
-    max: 50
+    max: 20
   },
   defaultValue: 3,
   globalKey: "elkEnergyFromGrass",
@@ -174,20 +165,8 @@ addWidget({
   globalKey: "elkCount",
   type: "readout"
 });
-/*addWidget({
-  data: {
-    backgroundColor: "#666",
-    color: "#fff",
-    label: "Wolves"
-  },
-  defaultValue: 0,
-  globalKey: "wolfCount",
-  type: "readout"
-});*/
 
 function setup() {
-  //create_sheep(50);
-  //create_wolves(10);
 }
 
 sim.beforeTick = () => {
@@ -200,56 +179,6 @@ sim.beforeTick = () => {
 }
 
 sim.afterTick = () => {
-  /*
-  sim.squares.forEach(square => {
-    // Grow grass
-    if (square.state.grassLevel < maxGrassLevel) {
-      square.state.grassLevel = Math.min(maxGrassLevel, square.state.grassLevel + grassGrowthRate);
-    }
-  });
-
-  sim.actors?.forEach(a => {
-    // Lose energy and possibly die
-    const energyLoss = a.label("sheep") ? sheepEnergyLoss : wolfEnergyLoss;
-    a.state.energy = a.state.energy - energyLoss;
-    if (a.state.energy <= 0) {
-      const globalKey = a.label("sheep") ? "sheepCount" : "wolfCount";
-      globals.set(globalKey, globals.get(globalKey) - 1);
-      a.remove();
-      return;
-    }
-
-    // Turn
-    a.vel.turn(Math.random() * Math.PI / 4 - Math.PI / 8);
-
-    // Reproduce
-    const reproduceChance = a.label("sheep") ? sheepReproduceChance : wolfReproduceChance;
-    if (Math.random() < reproduceChance) {
-      const addFunction = a.label("sheep") ? create_a_sheep : create_a_wolf;
-      addFunction({ energy: a.state.energy / 2, x: a.x, y: a.y });
-      a.state.energy = a.state.energy / 2;
-    }
-  });
-
-  sim.withLabel("sheep").forEach(s => {
-    // Eat grass
-    const sq = s.squareOfCentroid();
-    if (sq.state.grassLevel >= maxGrassLevel) {
-      s.state.energy = s.state.energy + globals.get("sheepEnergyFromGrass");
-      sq.state.grassLevel = 0;
-    }
-  });
-
-  sim.withLabel("wolves").forEach(w => {
-    // Eat sheep
-    const s = w.overlapping("actor").find(a => a?.label("sheep"));
-    if (s) {
-      w.state.energy = w.state.energy + s.state.energy / 2;
-      s.remove();
-      globals.set("sheepCount", globals.get("sheepCount") - 1);
-    }
-  });
-  */
 };
 
 // set up squares (patches)
@@ -268,54 +197,6 @@ for (let x = 0; x < sim.width / sim.gridStep; x++) {
     square.vis({ tint: s => s.state.grassLevel === maxGrassLevel ? "0x00cc00" : "0x996600" });
   }
 }
-
-/*
-// sheep
-function create_a_sheep(props) {
-  const { color, energy, x, y } = props ?? {};
-  const agent = new AA.Actor();
-  agent.radius = 10;
-  agent.vel = AA.Vector.randomAngle(1);
-  agent.vis({ image: sheepImage, tint: color });
-  agent.label("sheep", true);
-  agent.state = { energy: energy ?? sheepEnergy };
-  agent.x = x ?? globals.get("mouseX") ?? Math.random() * sim.width;
-  agent.y = y ?? globals.get("mouseY") ?? Math.random() * sim.height;
-
-  agent.addTo(sim);
-  globals.set("sheepCount", globals.get("sheepCount") + 1);
-  return agent;
-}
-function create_sheep(num, callback) {
-  for (let i = 0; i < num; i++) {
-    const agent = create_a_sheep();
-    if (callback) callback(agent);
-  }
-}
-
-// wolves
-function create_a_wolf(props) {
-  const { color, energy, x, y } = props ?? {};
-  const agent = new AA.Actor();
-  agent.radius = 10;
-  agent.vel = AA.Vector.randomAngle(1.5);
-  agent.vis({ image: wolfImage, tint: color ?? "0x333333" });
-  agent.label("wolves", true);
-  agent.state = { energy: energy ?? wolfEnergy };
-  agent.x = x ?? globals.get("mouseX") ?? Math.random() * sim.width;
-  agent.y = y ?? globals.get("mouseY") ?? Math.random() * sim.height;
-
-  agent.addTo(sim);
-  globals.set("wolfCount", globals.get("wolfCount") + 1);
-  return agent;
-};
-function create_wolves(num, callback) {
-  for (let i = 0; i < num; i++) {
-    const agent = create_a_wolf();
-    if (callback) callback(agent);
-  }
-}
-  */
 
 // elk
 function create_a_elk(props) {
