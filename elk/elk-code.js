@@ -136,6 +136,8 @@ const elkEnergyLoss = 0.02;
 const maxHydration = 10; // Maximum water a grid square can hold
 const minHydration = 0;   // Minimum water
 
+globals.set("elkCount", 0);
+
 // Create widgets
 addWidget({
   data: {
