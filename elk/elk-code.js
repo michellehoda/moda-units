@@ -2,7 +2,7 @@
 // but adapted to a carrying capacity mode.
 
 // I made the Tule Elk using Gemini Pro
-const elkSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="42 17 261 266" width="100%" height="100%">
+const elkSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="42 17 261 266" width="261" height="266">
   <title>California Tule Elk Outline - Full Space</title>
   
   <polygon points="
