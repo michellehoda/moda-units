@@ -5,8 +5,7 @@
 const elkSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="42 17 261 266" width="100%" height="100%">
   <title>California Tule Elk Outline - Full Space</title>
   
-  <polygon 
-    points="
+  <polygon points="
       300,90 
       285,80 
       265,75 
@@ -41,8 +40,7 @@ const elkSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="42 17 261 266" 
       190,165 
       230,140 
       260,115 
-      290,100
-    " 
+      290,100" 
     fill="#e8caa2" 
     stroke="#e8caa2" 
     stroke-width="4" 
