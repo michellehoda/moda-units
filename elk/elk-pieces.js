@@ -3,18 +3,17 @@
 
 /*** Grow grass */
 sim.squares.forEach(square => {
-  if (square.state.grassLevel == 0 && square.state.hydration > 0) {
+  if (square.state.hydration > 10) {
     square.state.grassLevel = 1;
   }
-    if (square.state.grassLevel == 1 && square.state.hydration == 0) {
+    if (square.state.hydration == 0) {
     square.state.grassLevel = 0;
   }
 });
 /*** End grow grass */
 
 /*** Reduce energy */
-const energyLoss = agent.label("sheep") ? sheepEnergyLoss : wolfEnergyLoss;
-agent.state.energy = agent.state.energy - energyLoss;
+agent.state.energy = agent.state.energy - ${amount};
 /*** End reduce energy */
 
 /*** No more energy */
@@ -22,10 +21,9 @@ agent.state.energy <= 0
 /*** End no more energy */
 
 /*** Die */
-const globalKey = agent.label("sheep") ? "sheepCount" : "wolfCount";
+const globalKey = "elkCount";
 globals.set(globalKey, globals.get(globalKey) - 1);
 agent.remove();
-return;
 /*** End die */
 
 /*** Move */
@@ -33,10 +31,8 @@ agent.vel.turn(Math.random() * Math.PI / 4 - Math.PI / 8);
 /*** End move */
 
 /*** Reproduce */
-const reproduceChance = agent.label("sheep") ? sheepReproduceChance : wolfReproduceChance;
-if (Math.random() < reproduceChance) {
-  const addFunction = agent.label("sheep") ? create_a_sheep : create_a_wolf;
-  addFunction({ energy: agent.state.energy / 2, x: agent.x, y: agent.y });
+if (agent.state.energy > ${amount}) {
+  create_a_elk({ energy: agent.state.energy / 2, x: agent.x, y: agent.y });
   agent.state.energy = agent.state.energy / 2;
 }
 /*** End reproduce */
@@ -51,12 +47,14 @@ if (sq.state.grassLevel == 1) {
 
 /*** Hydrate grass */
 sim.squares.forEach(square => {
-  square.state.hydration = Math.min(maxHydration, square.state.hydration + amount);
+  square.state.hydration = Math.min(maxHydration, 
+    square.state.hydration + Math.random() * ${amount});
 });
 /*** End hydrate grass */
 
 /*** Dry out grass */
 sim.squares.forEach(square => {
-  square.state.hydration = Math.max(minHydration, square.state.hydration - amount);
+  square.state.hydration = Math.max(minHydration, 
+    square.state.hydration - Math.random() * ${amount});
 });
 /*** End dry out grass */
