@@ -125,7 +125,7 @@ function create_a_elk(props) {
   const { color, energy, x, y } = props ?? {};
   const agent = new AA.Actor();
   agent.radius = 10;
-  agent.vel = AA.Vector.randomAngle(1);
+  agent.vel = AA.Vector.randomAngle(0.0001);
   agent.vis({ image: elkImage, tint: color });
   agent.label("elk", true);
   agent.state = { energy: energy ?? elkEnergy };
