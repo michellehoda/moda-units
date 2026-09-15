@@ -3,12 +3,12 @@
 
 /*** Grow grass */
 sim.squares.forEach(square => {
-  if (square.state.hydration > 10) {
-    square.state.grassLevel = 1;
-  }
-    if (square.state.hydration == 0) {
-    square.state.grassLevel = 0;
-  }
+  if (square.state.hydration > ${amount}) {
+  square.state.grassLevel = 1;
+}
+if (square.state.hydration < 0) {
+  square.state.grassLevel = 0;
+}
 });
 /*** End grow grass */
 
@@ -31,7 +31,7 @@ agent.vel.turn(Math.random() * Math.PI / 4 - Math.PI / 8);
 /*** End move */
 
 /*** Reproduce */
-if (agent.state.energy > ${amount}) {
+if (Math.random() < .5 && agent.state.energy > ${amount}) {
   create_a_elk({ energy: agent.state.energy / 2, x: agent.x, y: agent.y });
   agent.state.energy = agent.state.energy / 2;
 }
@@ -47,7 +47,7 @@ if (sq.state.grassLevel == 1) {
 
 /*** Hydrate grass */
 sim.squares.forEach(square => {
-  square.state.hydration = Math.min(maxHydration, 
+  square.state.hydration = Math.min(maxHydration,
     square.state.hydration + Math.random() * ${amount});
 });
 /*** End hydrate grass */
@@ -55,6 +55,9 @@ sim.squares.forEach(square => {
 /*** Dry out grass */
 sim.squares.forEach(square => {
   square.state.hydration = Math.max(minHydration, 
-    square.state.hydration - Math.random() * ${amount});
+	  square.state.hydration - Math.random() * ${amount});
+  if (square.state.hydration < 0) {
+	  square.state.grassLevel = 0;
+  }
 });
 /*** End dry out grass */
